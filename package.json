@@ -1,0 +1,48 @@
+{
+    "name": "black",
+    "version": "1.0.0",
+    "description": "A small frame",
+    "main": "app.ts",
+    "scripts": {
+        "test": "ts-node ./test.ts",
+        "dev": "ts-node ./src/server.ts",
+        "build": "rm -r ./dist && tsc && node ./dist/src/server.js",
+        "lint": "eslint src --ext .ts,.js --fix",
+        "Annotate": "监听src文件夹下所有后缀名为ts、tsx的文件变化，一旦改变执行ts-node ./src/server.ts",
+        "watch": "nodemon --watch 'src/**/*' --exec ts-node ./src/server.ts -e ts tsx"
+    },
+    "keywords": [
+        "typescript",
+        "koa"
+    ],
+    "author": "zhangyue",
+    "license": "ISC",
+    "dependencies": {
+        "-": "0.0.1",
+        "D": "^1.0.0",
+        "async-validator": "^3.4.0",
+        "glob": "^7.1.6",
+        "jsonwebtoken": "^8.5.1",
+        "koa": "^2.13.0",
+        "koa-bodyparser": "^4.3.0",
+        "koa-router": "^9.4.0",
+        "mongodb": "^3.6.1",
+        "mongoose": "^5.10.3"
+    },
+    "devDependencies": {
+        "@types/glob": "^7.1.3",
+        "@types/jsonwebtoken": "^8.5.0",
+        "@types/koa": "^2.11.4",
+        "@types/koa-bodyparser": "^4.3.0",
+        "@types/koa-router": "^7.4.1",
+        "@types/mongodb": "^3.5.27",
+        "@types/mongoose": "^5.7.36",
+        "@types/node": "^14.6.4",
+        "@typescript-eslint/eslint-plugin": "^3.10.1",
+        "@typescript-eslint/parser": "^3.10.1",
+        "eslint": "^7.8.1",
+        "nodemon": "^2.0.4",
+        "ts-node": "^8.10.2",
+        "typescript": "^3.9.7"
+    }
+}
