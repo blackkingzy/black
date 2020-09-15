@@ -1,6 +1,7 @@
 import Koa from "koa";
 import Router from "koa-router";
-import bodyParser from "koa-bodyparser";
+import koabody from "koa-body";
+import koalogger from "koa-logger";
 import { load, loadModel } from "./util";
 import { resolve } from "path";
 import { connect } from "./initdb";
@@ -33,7 +34,13 @@ export default class Black {
         });
 
         //body解析
-        this.app.use(bodyParser());
+        this.app.use(
+            koabody({
+                multipart: true,
+            })
+        );
+        //打印log
+        this.app.use(koalogger())
 
         //装载model到ctx
         this.app.use(loadModel(resolve(__dirname, "../src/model"), {}, this));

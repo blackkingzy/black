@@ -2,8 +2,7 @@ import koa from "koa";
 import glob from "glob";
 import { join } from "path";
 import black from "./black";
-
-declare function require(moduleName: string): any;
+import mongoose from "mongoose";
 
 interface ILoadOptions {
     extname?: string;
@@ -27,8 +26,9 @@ const loadModel = (folder: string, options: ILoadOptions, app: black) => {
         .forEach((item) => {
             //注意这里的模块化导入
             const { default: model } = require(item);
-            app.$model[model.prototype.collection.name] = model;
+            app.$model[model.modelName] = model;
         });
+
     return async (ctx: koa.Context, next: koa.Next) => {
         ctx.model = app.$model;
         await next();
