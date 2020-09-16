@@ -4,6 +4,8 @@ interface DBConfig {
         useNewUrlParser: boolean;
 
         useUnifiedTopology: boolean;
+
+        useFindAndModify?: boolean
     };
     callback?: (error: any) => void;
 }
@@ -14,6 +16,8 @@ const dbconfig: DBConfig = {
         useNewUrlParser: true,
 
         useUnifiedTopology: true,
+
+        useFindAndModify: false,
     }
 };
 
