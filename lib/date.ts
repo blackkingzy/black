@@ -27,3 +27,4 @@ export const format = (pattern = "yyyy.MM.dd hh:mm:ss") => {
     return pattern;
 };
 
+console.log(format());

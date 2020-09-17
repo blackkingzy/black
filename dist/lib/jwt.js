@@ -3,13 +3,13 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.userTokenVerify = void 0;
-const token_config_1 = __importDefault(require("../src/config/token.config"));
+exports.generate = exports.userTokenVerify = void 0;
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
+const setting_1 = __importDefault(require("./setting"));
 exports.userTokenVerify = async (ctx, next) => {
     const userToken = ctx.headers.authorization;
     try {
-        const decoded = jsonwebtoken_1.default.verify(userToken, token_config_1.default.secret);
+        const decoded = jsonwebtoken_1.default.verify(userToken, setting_1.default.tconfig.secret);
         ctx.data = decoded;
         await next();
     }
@@ -17,7 +17,9 @@ exports.userTokenVerify = async (ctx, next) => {
         console.log(error);
     }
 };
-// export const generate = (Info) => {
-//     const token = jwt.sign(Info, tconfig.secret, tconfig.option);
-//     return token
-// }
+exports.generate = (Info) => {
+    const token = setting_1.default.tconfig.option
+        ? jsonwebtoken_1.default.sign(Info, setting_1.default.tconfig.secret, setting_1.default.tconfig.option)
+        : jsonwebtoken_1.default.sign(Info, setting_1.default.tconfig.secret);
+    return token;
+};

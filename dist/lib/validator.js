@@ -7,19 +7,15 @@ exports.body = exports.query = void 0;
 const async_validator_1 = __importDefault(require("async-validator"));
 const validateRule = (paramPart) => (rule) => {
     return (target, key) => {
-        const validate = async (ctx, next) => {
+        const oldMethod = target[key];
+        target[key] = async (ctx, next) => {
             const validator = new async_validator_1.default(rule);
             //为了不改body-parser的声明文件
             const type = paramPart === "query" ? "query" : "body";
-            await validator.validate(ctx.request[type]);
-            await next();
+            //注意validate函数的参数写法,不能直接写ctx.request[type]
+            await validator.validate(Object.assign({}, ctx.request[type]));
+            await oldMethod.apply(null, [ctx, next]);
         };
-        if (target.middlewares) {
-            target.middlewares.push(validate);
-        }
-        else {
-            target.middlewares = [validate];
-        }
     };
 };
 exports.query = validateRule("query");

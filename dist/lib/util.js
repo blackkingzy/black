@@ -25,7 +25,7 @@ const loadModel = (folder, options, app) => {
         .forEach((item) => {
         //注意这里的模块化导入
         const { default: model } = require(item);
-        app.$model[model.prototype.collection.name] = model;
+        app.$model[model.modelName] = model;
     });
     return async (ctx, next) => {
         ctx.model = app.$model;

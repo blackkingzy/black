@@ -4,12 +4,14 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.connect = void 0;
-const db_config_1 = require("../src/config/db.config");
 const mongoose_1 = __importDefault(require("mongoose"));
+const setting_1 = __importDefault(require("./setting"));
 exports.connect = () => {
     //数据库连接
     return new Promise((resolve, reject) => {
-        mongoose_1.default.connect(db_config_1.dbconfig.url, db_config_1.dbconfig.option);
+        setting_1.default.dconfig.option
+            ? mongoose_1.default.connect(setting_1.default.dconfig.url, setting_1.default.dconfig.option)
+            : mongoose_1.default.connect(setting_1.default.dconfig.url);
         const db = mongoose_1.default.connection;
         db.once("connected", () => {
             resolve();

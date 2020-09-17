@@ -5,6 +5,8 @@ import koalogger from "koa-logger";
 import { load, loadModel } from "./util";
 import { resolve } from "path";
 import { connect } from "./initdb";
+import setting from './setting'
+
 
 interface Model {
     [model: string]: any;
@@ -14,13 +16,13 @@ export default class Black {
     public app: Koa;
     public $router: Router;
     public $model: Model = {};
+    public $server: any
 
     constructor(public option: any) {
-        this.start();
     }
 
     async start() {
-        await connect();
+        if (setting.database) await connect();
 
         this.app = new Koa();
 
@@ -52,7 +54,7 @@ export default class Black {
             })
         );
         //打印log
-        this.app.use(koalogger())
+        if (setting.log) this.app.use(koalogger())
 
         //装载model到ctx
         this.app.use(loadModel(resolve(__dirname, "../src/model"), {}, this));
@@ -64,12 +66,13 @@ export default class Black {
 
         this.app.use(this.$router.routes());
 
-        await this.listen();
     }
 
-    async listen(callback?: () => void) {
-        const port = this.option.port ? this.option.port : "3000";
-        this.app.listen(port, () => {
+    async listen(port?: number, callback?: () => void) {
+        await this.start();
+        port = port || 3000;
+        this.$server = this.$server || this.app
+        this.$server.listen(port, () => {
             callback ? callback() : "";
             console.log(`black framework Start at ${port}`);
         });

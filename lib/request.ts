@@ -1,6 +1,7 @@
 import Koa from "koa";
 import { router } from "./util";
 import { userTokenVerify } from "./jwt";
+import setting from './setting'
 
 type HTTPMethod = "get" | "put" | "del" | "post" | "patch";
 
@@ -17,7 +18,7 @@ const method = (httpMethod: HTTPMethod) => (
         //注意中间件的执行顺序
         const mids = [];
         //token验证
-        options.tokenVerify ? mids.push(userTokenVerify) : "";
+        setting.token && options.tokenVerify ? mids.push(userTokenVerify) : "";
         //接口单独中间件
         options.middlewares ? mids.push(...options.middlewares) : "";
         //接口前缀

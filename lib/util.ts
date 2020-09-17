@@ -2,7 +2,6 @@ import koa from "koa";
 import glob from "glob";
 import { join } from "path";
 import black from "./black";
-import mongoose from "mongoose";
 
 interface ILoadOptions {
     extname?: string;

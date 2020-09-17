@@ -1,11 +1,11 @@
 import Koa from "koa";
-import tconfig from "../src/config/token.config";
 import jwt from "jsonwebtoken";
+import setting from "./setting";
 
 export const userTokenVerify = async (ctx: Koa.Context, next: Koa.Next) => {
     const userToken = ctx.headers.authorization;
     try {
-        const decoded = jwt.verify(userToken, tconfig.secret);
+        const decoded = jwt.verify(userToken, setting.tconfig.secret);
         ctx.data = decoded;
         await next();
     } catch (error) {
@@ -14,6 +14,8 @@ export const userTokenVerify = async (ctx: Koa.Context, next: Koa.Next) => {
 };
 
 export const generate = (Info: any) => {
-    const token = jwt.sign(Info, tconfig.secret, tconfig.option);
+    const token = setting.tconfig.option
+        ? jwt.sign(Info, setting.tconfig.secret, setting.tconfig.option)
+        : jwt.sign(Info, setting.tconfig.secret);
     return token;
 };

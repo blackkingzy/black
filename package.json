@@ -1,22 +1,31 @@
 {
     "name": "black",
     "version": "1.0.0",
-    "description": "A small frame",
-    "main": "app.ts",
+    "description": "A small typescript frame",
+    "main": "dist/index.js",
     "scripts": {
         "test": "ts-node ./test.ts",
         "dev": "ts-node ./src/server.ts",
-        "build": "rm -r ./dist && tsc && node ./dist/src/server.js",
+        "build": "rm -r ./dist && tsc",
         "lint": "eslint src --ext .ts,.js --fix",
         "Annotate": "监听src文件夹下所有后缀名为ts、tsx的文件变化，一旦改变执行ts-node ./src/server.ts",
         "watch": "nodemon --watch 'src/**/*' --exec ts-node ./src/server.ts -e ts tsx"
     },
     "keywords": [
         "typescript",
-        "koa"
+        "koa",
+        "node"
     ],
     "author": "zhangyue",
-    "license": "ISC",
+    "license": "MIT",
+    "files": [
+        "dist/",
+        "LICENSE",
+        "index.d.ts",
+        "package.json",
+        "LICENSE",
+        "README.md"
+    ],
     "dependencies": {
         "-": "0.0.1",
         "D": "^1.0.0",

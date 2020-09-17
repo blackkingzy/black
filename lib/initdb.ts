@@ -1,16 +1,13 @@
-import { dbconfig } from "../src/config/db.config";
 import mongoose from "mongoose";
+import setting from "./setting";
 
-export const connect =  () => {
-
-
+export const connect = () => {
     //数据库连接
     return new Promise((resolve, reject) => {
-        
-
-        mongoose.connect(dbconfig.url, dbconfig.option)
+        setting.dconfig.option
+            ? mongoose.connect(setting.dconfig.url, setting.dconfig.option)
+            : mongoose.connect(setting.dconfig.url);
         const db = mongoose.connection;
-            
 
         db.once("connected", () => {
             resolve();
