@@ -23,4 +23,13 @@ class User {
         console.log(result);
         ctx.body = "欢迎来到TS的世界";
     }
+    /**
+     * @model test
+     * @param ctx
+     */
+    @get("/")
+    async test(ctx: koa.Context) {
+        console.log('test');
+        ctx.body = "欢迎来到TS的世界";
+    }
 }

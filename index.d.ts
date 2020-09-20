@@ -57,6 +57,14 @@ type Decoration = (
     descriptor?: PropertyDescriptor
 ) => any;
 
+type globalMiddleware = (ctx: Koa.Context, next: Koa.Next) => void;
+
+type globalMiddlewareFactory = (option?: any) => globalMiddleware;
+
+interface Option {
+    mids?: Array<globalMiddlewareFactory>;
+}
+
 declare function get(path: string, options: IRouteOptions): Decoration;
 
 declare function post(path: string, options: IRouteOptions): Decoration;
@@ -75,11 +83,12 @@ declare function format(pattern: string): Decoration;
 
 declare function success(ctx: Koa.Context, res?: any, msg?: string): void;
 
+declare function isDev(): boolean;
+
 export {
-    DBConfig,
-    TConfig,
     black,
     Setting,
+    Option,
     userTokenVerify,
     generate,
     get,
@@ -91,4 +100,5 @@ export {
     imageUpload,
     format,
     success,
+    isDev,
 };

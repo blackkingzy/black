@@ -9,10 +9,14 @@ import { query } from "./lib/validator";
 import { body } from "./lib/validator";
 import { imageUpload } from "./lib/upload";
 import { format } from "./lib/date";
-import { success } from "./lib/helper";
+import { success, isDev } from "./lib/helper";
+import { Setting } from "./lib/setting";
 
 export {
+    //接口
     black,
+    Setting,
+    //功能函数
     userTokenVerify,
     generate,
     get,
@@ -25,4 +29,5 @@ export {
     imageUpload,
     format,
     success,
+    isDev,
 };

@@ -1,11 +1,8 @@
 import black from "../lib/black";
+import { customMidware } from "./mids/index";
 
-interface Option {
-    port: number;
-}
+const app = new black({
+    mids: [customMidware],
+});
 
-const option:Option = {
-    port: 3009,
-};
-
-const app = new black(option);
+app.listen();
