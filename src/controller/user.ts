@@ -7,7 +7,7 @@ class User {
      * @model user
      * @param ctx
      */
-    @post("/zy")
+    @post("/zy",{})
     //验证会先走自定义的，然后在是required的判断等等
     @body({
         username: {

@@ -65,13 +65,13 @@ interface Option {
     mids?: Array<globalMiddlewareFactory>;
 }
 
-declare function get(path: string, options: IRouteOptions): Decoration;
+declare function get(path: string, options?: IRouteOptions): Decoration;
 
-declare function post(path: string, options: IRouteOptions): Decoration;
+declare function post(path: string, options?: IRouteOptions): Decoration;
 
-declare function put(path: string, options: IRouteOptions): Decoration;
+declare function put(path: string, options?: IRouteOptions): Decoration;
 
-declare function del(path: string, options: IRouteOptions): Decoration;
+declare function del(path: string, options?: IRouteOptions): Decoration;
 
 declare function query(rule: any): Decoration;
 
