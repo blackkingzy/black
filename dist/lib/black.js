@@ -35,6 +35,7 @@ class Black {
     constructor(option) {
         this.option = option;
         this.$model = {};
+        this.$server = null;
         this.app = new koa_1.default();
         this.$router = new koa_router_1.default();
     }
@@ -61,12 +62,6 @@ class Black {
                 ctx.status = 200;
             }
         });
-        //加载全局自定义中间件
-        if (this.option && this.option.mids.length) {
-            this.option.mids.forEach((mid) => {
-                this.app.use(mid());
-            });
-        }
         //body解析
         this.app.use(koa_body_1.default({
             multipart: true,
@@ -82,6 +77,23 @@ class Black {
         helper_1.isDev()
             ? util_1.load(path_1.resolve(setting_1.Setting.root, "src/controller"), {}, this)
             : util_1.load(path_1.resolve(setting_1.Setting.root_prod, "src/controller"), {}, this);
+        //将实例挂载在上下文中
+        this.app.use(async (ctx, next) => {
+            ctx.instance = this;
+            await next();
+        });
+        //加载全局的工厂函数（加工this）
+        if (this.option && this.option.factory.length) {
+            this.option.factory.forEach((func) => {
+                func(this);
+            });
+        }
+        //加载全局自定义中间件
+        if (this.option && this.option.mids.length) {
+            this.option.mids.forEach((mid) => {
+                this.app.use(mid);
+            });
+        }
         this.app.use(this.$router.routes());
     }
     async listen(port, callback) {
