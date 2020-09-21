@@ -7,11 +7,12 @@ interface Model {
     [model: string]: any;
 }
 
-declare class black {
+declare class Black {
     public app: Koa;
     public $router: Router;
     public $model: Model;
     public $server: any;
+    [key: string]: any;
 
     constructor(option?: any);
 
@@ -59,10 +60,11 @@ type Decoration = (
 
 type globalMiddleware = (ctx: Koa.Context, next: Koa.Next) => void;
 
-type globalMiddlewareFactory = (option?: any) => globalMiddleware;
+type factoryFunction = (app?: Black) => void;
 
 interface Option {
-    mids?: Array<globalMiddlewareFactory>;
+    mids?: Array<globalMiddleware>;
+    factory?: Array<factoryFunction>;
 }
 
 declare function get(path: string, options?: IRouteOptions): Decoration;
@@ -86,7 +88,7 @@ declare function success(ctx: Koa.Context, res?: any, msg?: string): void;
 declare function isDev(): boolean;
 
 export {
-    black,
+    Black,
     Setting,
     Option,
     userTokenVerify,

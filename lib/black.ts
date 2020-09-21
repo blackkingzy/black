@@ -14,17 +14,19 @@ interface Model {
 
 type globalMiddleware = (ctx: Koa.Context, next: Koa.Next) => void;
 
-type globalMiddlewareFactory = (option?: any) => globalMiddleware;
+type factoryFunction = (app?: Black) => void;
 
 interface Option {
-    mids?: Array<globalMiddlewareFactory>;
+    mids?: Array<globalMiddleware>;
+    factory?: Array<factoryFunction>;
 }
 
 export default class Black {
     public app: Koa;
     public $router: Router;
     public $model: Model = {};
-    public $server: any;
+    public $server: any = null;
+    [key: string]: any;
 
     constructor(public option?: Option) {
         this.app = new Koa();
@@ -55,13 +57,6 @@ export default class Black {
                 ctx.status = 200;
             }
         });
-        
-        //加载全局自定义中间件
-        if (this.option && this.option.mids.length) {
-            this.option.mids.forEach((mid) => {
-                this.app.use(mid());
-            });
-        }
 
         //body解析
         this.app.use(
@@ -85,6 +80,26 @@ export default class Black {
         isDev()
             ? load(resolve(Setting.root, "src/controller"), {}, this)
             : load(resolve(Setting.root_prod, "src/controller"), {}, this);
+
+        //将实例挂载在上下文中
+        this.app.use(async (ctx: Koa.Context, next: Koa.Next) => {
+            ctx.instance = this;
+            await next();
+        });
+
+        //加载全局的工厂函数（加工this）
+        if (this.option && this.option.factory.length) {
+            this.option.factory.forEach((func) => {
+                func(this);
+            });
+        }
+
+        //加载全局自定义中间件
+        if (this.option && this.option.mids.length) {
+            this.option.mids.forEach((mid) => {
+                this.app.use(mid);
+            });
+        }
 
         this.app.use(this.$router.routes());
     }
