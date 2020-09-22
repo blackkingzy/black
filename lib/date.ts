@@ -3,8 +3,11 @@ interface dataMap {
     [index: string]: number;
 }
 
-export const format = (pattern = "yyyy.MM.dd hh:mm:ss") => {
-    const date = new Date();
+export const utcToLocalString = (
+    UTCdataString: string,
+    pattern = "yyyy.MM.dd hh:mm:ss"
+) => {
+    const date = new Date(UTCdataString);
     const map: dataMap = {
         y: date.getFullYear(), //年份
         M: date.getMonth() + 1, //月份
@@ -26,5 +29,3 @@ export const format = (pattern = "yyyy.MM.dd hh:mm:ss") => {
     }
     return pattern;
 };
-
-console.log(format());

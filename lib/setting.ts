@@ -21,7 +21,7 @@ export class Setting {
     public static root_prod = `${path.resolve(".")}/dist`;
     public token = false;
     public database = false;
-    public log = true;
+    public httplog = true;
     public tconfig: TConfig;
     public dconfig: DBConfig;
 }

@@ -1,4 +1,4 @@
-import black from "./lib/black";
+import Black from "./lib/black";
 import { generate } from "./lib/jwt";
 import { userTokenVerify } from "./lib/jwt";
 import { get } from "./lib/request";
@@ -8,13 +8,14 @@ import { del } from "./lib/request";
 import { query } from "./lib/validator";
 import { body } from "./lib/validator";
 import { imageUpload } from "./lib/upload";
-import { format } from "./lib/date";
+import { utcToLocalString } from "./lib/date";
 import { success, isDev } from "./lib/helper";
 import { Setting } from "./lib/setting";
+import { logger } from "./lib/log";
 
 export {
     //接口
-    black,
+    Black,
     Setting,
     //功能函数
     userTokenVerify,
@@ -27,7 +28,9 @@ export {
     body,
     //工具函数
     imageUpload,
-    format,
+    utcToLocalString,
     success,
     isDev,
+    //实例
+    logger,
 };

@@ -2,6 +2,7 @@ import Koa from "koa";
 import Router from "koa-router";
 import { Secret, SignOptions } from "jsonwebtoken";
 import { ConnectionOptions } from "mongoose";
+import { Logger } from "winston";
 
 interface Model {
     [model: string]: any;
@@ -37,7 +38,7 @@ declare class Setting {
     public static root?: string;
     public token: boolean;
     public database: boolean;
-    public log: boolean;
+    public httplog: boolean;
     public tconfig: TConfig;
     public dconfig: DBConfig;
 }
@@ -87,10 +88,14 @@ declare function success(ctx: Koa.Context, res?: any, msg?: string): void;
 
 declare function isDev(): boolean;
 
+declare const logger: Logger;
+
 export {
+    //接口
     Black,
     Setting,
     Option,
+    //功能函数
     userTokenVerify,
     generate,
     get,
@@ -99,8 +104,11 @@ export {
     del,
     query,
     body,
+    //工具函数
     imageUpload,
     format,
     success,
     isDev,
+    //实例
+    logger
 };

@@ -1,6 +1,7 @@
 import koa from "koa";
 import { get, post } from "../../lib/request";
 import { body } from "../../lib/validator";
+import { logger } from "../../lib/log"
 
 class User {
     /**
@@ -30,6 +31,18 @@ class User {
     @get("/")
     async test(ctx: koa.Context) {
         console.log('test');
+        logger.log({
+            level: 'error',
+            message: 'Hello distributed log files!'
+        });
+        logger.log({
+            level: 'warn',
+            message: 'Hello distributed log files!'
+        });
+        logger.log({
+            level: 'info',
+            message: 'Hello distributed log files!'
+        });
         ctx.body = "欢迎来到TS的世界";
     }
 }

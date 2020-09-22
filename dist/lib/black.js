@@ -31,6 +31,7 @@ const path_1 = require("path");
 const initdb_1 = require("./initdb");
 const setting_1 = __importStar(require("./setting"));
 const helper_1 = require("./helper");
+const log_1 = require("./log");
 class Black {
     constructor(option) {
         this.option = option;
@@ -48,6 +49,7 @@ class Black {
                 await next();
             }
             catch (err) {
+                log_1.logger.error(err.stack);
                 const status = err.status || 500;
                 //生产环境时 500错误的详细内容不返回给客户端，因为可能包含敏感信息
                 const error = status === 500 ? "Internal Server Error" : err.message;
@@ -67,43 +69,48 @@ class Black {
             multipart: true,
         }));
         //打印控制台log
-        if (setting_1.default.log)
+        if (setting_1.default.httplog)
             this.app.use(koa_logger_1.default());
         //装载model到ctx
         helper_1.isDev()
             ? this.app.use(util_1.loadModel(path_1.resolve(setting_1.Setting.root, "src/model"), {}, this))
             : this.app.use(util_1.loadModel(path_1.resolve(setting_1.Setting.root_prod, "src/model"), {}, this));
-        //加载路由和controller
-        helper_1.isDev()
-            ? util_1.load(path_1.resolve(setting_1.Setting.root, "src/controller"), {}, this)
-            : util_1.load(path_1.resolve(setting_1.Setting.root_prod, "src/controller"), {}, this);
-        //将实例挂载在上下文中
-        this.app.use(async (ctx, next) => {
-            ctx.instance = this;
-            await next();
-        });
         //加载全局的工厂函数（加工this）
         if (this.option && this.option.factory.length) {
             this.option.factory.forEach((func) => {
                 func(this);
             });
         }
-        //加载全局自定义中间件
+        //将实例挂载在上下文中
+        this.app.use(async (ctx, next) => {
+            ctx.instance = this;
+            await next();
+        });
+        // //加载全局自定义中间件
         if (this.option && this.option.mids.length) {
             this.option.mids.forEach((mid) => {
                 this.app.use(mid);
             });
         }
+        //加载路由和controller
+        helper_1.isDev()
+            ? util_1.load(path_1.resolve(setting_1.Setting.root, "src/controller"), {}, this)
+            : util_1.load(path_1.resolve(setting_1.Setting.root_prod, "src/controller"), {}, this);
         this.app.use(this.$router.routes());
     }
     async listen(port, callback) {
-        await this.start();
-        port = port || 3000;
-        this.$server = this.$server || this.app;
-        this.$server.listen(port, () => {
-            callback ? callback() : "";
-            console.log(`black framework Start at ${port}`);
-        });
+        try {
+            await this.start();
+            port = port || 3000;
+            this.$server = this.$server || this.app;
+            this.$server.listen(port, () => {
+                callback ? callback() : "";
+                console.log(`black framework Start at ${port}`);
+            });
+        }
+        catch (error) {
+            log_1.logger.error(error.stack);
+        }
     }
 }
 exports.default = Black;

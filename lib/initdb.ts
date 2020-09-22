@@ -4,9 +4,6 @@ import setting from "./setting";
 export const connect = () => {
     //数据库连接
     return new Promise((resolve, reject) => {
-        setting.dconfig.option
-            ? mongoose.connect(setting.dconfig.url, setting.dconfig.option)
-            : mongoose.connect(setting.dconfig.url);
         const db = mongoose.connection;
 
         db.once("connected", () => {
@@ -17,5 +14,9 @@ export const connect = () => {
             reject(error);
             console.log("数据库连接失败");
         });
+
+        setting.dconfig.option
+            ? mongoose.connect(setting.dconfig.url, setting.dconfig.option)
+            : mongoose.connect(setting.dconfig.url);
     });
 };

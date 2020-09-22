@@ -1,0 +1,6 @@
+2020.09.22 21:57:45:342 error: Hello distributed log files!
+2020.09.22 21:57:45:344 warn: Hello distributed log files!
+2020.09.22 21:57:45:344 info: Hello distributed log files!
+2020.09.22 21:58:46:981 error: Hello distributed log files!
+2020.09.22 21:58:46:983 warn: Hello distributed log files!
+2020.09.22 21:58:46:983 info: Hello distributed log files!
