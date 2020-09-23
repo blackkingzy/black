@@ -1,11 +1,11 @@
-import koa, { Next } from "koa";
+import Koa from "koa";
 import schema from "async-validator";
 
 const validateRule = (paramPart: string) => (rule: any) => {
 
     return (target: any, key: string) => {
         const oldMethod = target[key]
-        target[key] = async (ctx: koa.Context, next: koa.Next) => {
+        target[key] = async (ctx: Koa.Context, next: Koa.Next) => {
             
             const validator = new schema(rule);
             //为了不改body-parser的声明文件

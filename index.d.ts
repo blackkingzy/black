@@ -3,6 +3,7 @@ import Router from "koa-router";
 import { Secret, SignOptions } from "jsonwebtoken";
 import { ConnectionOptions } from "mongoose";
 import { Logger } from "winston";
+import { Connection } from "mongoose";
 
 interface Model {
     [model: string]: any;
@@ -13,6 +14,7 @@ declare class Black {
     public $router: Router;
     public $model: Model;
     public $server: any;
+    public $connection: Connection;
     [key: string]: any;
 
     constructor(option?: any);

@@ -1,7 +1,5 @@
 // ts遍历对象或者数组默认的索引签名是number,故想要通过索引是字符串来获取value，必须要写以下接口来更改索引签名
-interface dataMap {
-    [index: string]: number;
-}
+import { dataMap } from "./type";
 
 export const utcToLocalString = (
     UTCdataString: string,

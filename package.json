@@ -4,7 +4,7 @@
     "description": "A small typescript frame",
     "main": "dist/index.js",
     "scripts": {
-        "test": "ts-node ./test.ts",
+        "test": "jest --env=node --colors --coverage --detectOpenHandles test",
         "dev": "ts-node ./src/server.ts",
         "build": "rm -r ./dist && tsc",
         "lint": "eslint src --ext .ts,.js --fix",
@@ -60,5 +60,10 @@
         "ts-node": "^8.10.2",
         "typescript": "^3.9.7",
         "winston": "^3.3.3"
+    },
+    "devDependencies": {
+        "@types/jest": "^26.0.14",
+        "jest": "^26.4.2",
+        "ts-jest": "^26.4.0"
     }
 }

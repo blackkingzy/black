@@ -1,6 +1,6 @@
-import koa from "koa";
+import Koa from "koa";
 
-export const success = (ctx: koa.Context, res: any = null, msg = '请求成功') => {
+export const success = (ctx: Koa.Context, res: any = null, msg = '请求成功') => {
     ctx.body = {
         code: 0,
         data: res,

@@ -1,15 +1,8 @@
-import Koa from "koa";
+import setting from "./setting";
 import { router } from "./util";
 import { userTokenVerify } from "./jwt";
-import setting from './setting'
+import { HTTPMethod,IRouteOptions} from "./type";
 
-type HTTPMethod = "get" | "put" | "del" | "post" | "patch";
-
-interface IRouteOptions {
-    tokenVerify: boolean;
-    prefix?: string;
-    middlewares?: Koa.Middleware[];
-}
 const method = (httpMethod: HTTPMethod) => (
     path: string,
     options: IRouteOptions = { tokenVerify: true }

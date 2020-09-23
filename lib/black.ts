@@ -2,31 +2,21 @@ import Koa from "koa";
 import Router from "koa-router";
 import koabody from "koa-body";
 import koalogger from "koa-logger";
+import setting from "./setting";
 import { load, loadModel } from "./util";
 import { resolve } from "path";
-import { connect } from "./initdb";
-import setting, { Setting } from "./setting";
+import { connect } from "./db";
 import { isDev } from "./helper";
 import { logger } from "./log";
-
-interface Model {
-    [model: string]: any;
-}
-
-type globalMiddleware = (ctx: Koa.Context, next: Koa.Next) => void;
-
-type factoryFunction = (app?: Black) => void;
-
-interface Option {
-    mids?: Array<globalMiddleware>;
-    factory?: Array<factoryFunction>;
-}
+import { Connection } from "mongoose";
+import { Option, Model, Setting } from "./type";
 
 export default class Black {
     public app: Koa;
     public $router: Router;
     public $model: Model = {};
     public $server: any = null;
+    public $connection: Connection;
     [key: string]: any;
 
     constructor(public option?: Option) {
@@ -35,7 +25,7 @@ export default class Black {
     }
 
     async start() {
-        if (setting.database) await connect();
+        if (setting.database) await connect(setting, this);
 
         //全局错误处理
         this.app.use(async (ctx: Koa.Context, next: Koa.Next) => {

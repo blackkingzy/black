@@ -1,23 +1,4 @@
 "use strict";
-var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
-}) : (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    o[k2] = m[k];
-}));
-var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
-    Object.defineProperty(o, "default", { enumerable: true, value: v });
-}) : function(o, v) {
-    o["default"] = v;
-});
-var __importStar = (this && this.__importStar) || function (mod) {
-    if (mod && mod.__esModule) return mod;
-    var result = {};
-    if (mod != null) for (var k in mod) if (k !== "default" && Object.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
-    __setModuleDefault(result, mod);
-    return result;
-};
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
@@ -26,12 +7,13 @@ const koa_1 = __importDefault(require("koa"));
 const koa_router_1 = __importDefault(require("koa-router"));
 const koa_body_1 = __importDefault(require("koa-body"));
 const koa_logger_1 = __importDefault(require("koa-logger"));
+const setting_1 = __importDefault(require("./setting"));
 const util_1 = require("./util");
 const path_1 = require("path");
-const initdb_1 = require("./initdb");
-const setting_1 = __importStar(require("./setting"));
+const db_1 = require("./db");
 const helper_1 = require("./helper");
 const log_1 = require("./log");
+const type_1 = require("./type");
 class Black {
     constructor(option) {
         this.option = option;
@@ -42,7 +24,7 @@ class Black {
     }
     async start() {
         if (setting_1.default.database)
-            await initdb_1.connect();
+            await db_1.connect(setting_1.default, this);
         //全局错误处理
         this.app.use(async (ctx, next) => {
             try {
@@ -73,8 +55,8 @@ class Black {
             this.app.use(koa_logger_1.default());
         //装载model到ctx
         helper_1.isDev()
-            ? this.app.use(util_1.loadModel(path_1.resolve(setting_1.Setting.root, "src/model"), {}, this))
-            : this.app.use(util_1.loadModel(path_1.resolve(setting_1.Setting.root_prod, "src/model"), {}, this));
+            ? this.app.use(util_1.loadModel(path_1.resolve(type_1.Setting.root, "src/model"), {}, this))
+            : this.app.use(util_1.loadModel(path_1.resolve(type_1.Setting.root_prod, "src/model"), {}, this));
         //加载全局的工厂函数（加工this）
         if (this.option && this.option.factory.length) {
             this.option.factory.forEach((func) => {
@@ -94,8 +76,8 @@ class Black {
         }
         //加载路由和controller
         helper_1.isDev()
-            ? util_1.load(path_1.resolve(setting_1.Setting.root, "src/controller"), {}, this)
-            : util_1.load(path_1.resolve(setting_1.Setting.root_prod, "src/controller"), {}, this);
+            ? util_1.load(path_1.resolve(type_1.Setting.root, "src/controller"), {}, this)
+            : util_1.load(path_1.resolve(type_1.Setting.root_prod, "src/controller"), {}, this);
         this.app.use(this.$router.routes());
     }
     async listen(port, callback) {

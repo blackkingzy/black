@@ -10,7 +10,7 @@ import { body } from "./lib/validator";
 import { imageUpload } from "./lib/upload";
 import { utcToLocalString } from "./lib/date";
 import { success, isDev } from "./lib/helper";
-import { Setting } from "./lib/setting";
+import { Setting } from "./lib/type";
 import { logger } from "./lib/log";
 
 export {
