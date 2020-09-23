@@ -1,6 +1,6 @@
 {
     "name": "black-ts",
-    "version": "1.0.5",
+    "version": "1.0.6",
     "description": "A small typescript frame",
     "main": "dist/index.js",
     "scripts": {
