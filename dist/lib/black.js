@@ -13,7 +13,6 @@ const path_1 = require("path");
 const db_1 = require("./db");
 const helper_1 = require("./helper");
 const log_1 = require("./log");
-const type_1 = require("./type");
 class Black {
     constructor(option) {
         this.option = option;
@@ -55,10 +54,10 @@ class Black {
             this.app.use(koa_logger_1.default());
         //装载model到ctx
         helper_1.isDev()
-            ? this.app.use(util_1.loadModel(path_1.resolve(type_1.Setting.root, "src/model"), {}, this))
-            : this.app.use(util_1.loadModel(path_1.resolve(type_1.Setting.root_prod, "src/model"), {}, this));
+            ? this.app.use(util_1.loadModel(path_1.resolve(setting_1.default.root, "src/model"), {}, this))
+            : this.app.use(util_1.loadModel(path_1.resolve(setting_1.default.root_prod, "src/model"), {}, this));
         //加载全局的工厂函数（加工this）
-        if (this.option && this.option.factory.length) {
+        if (this.option && this.option.factory && this.option.factory.length) {
             this.option.factory.forEach((func) => {
                 func(this);
             });
@@ -69,15 +68,15 @@ class Black {
             await next();
         });
         // //加载全局自定义中间件
-        if (this.option && this.option.mids.length) {
+        if (this.option && this.option.mids && this.option.mids.length) {
             this.option.mids.forEach((mid) => {
                 this.app.use(mid);
             });
         }
         //加载路由和controller
         helper_1.isDev()
-            ? util_1.load(path_1.resolve(type_1.Setting.root, "src/controller"), {}, this)
-            : util_1.load(path_1.resolve(type_1.Setting.root_prod, "src/controller"), {}, this);
+            ? util_1.load(path_1.resolve(setting_1.default.root, "src/controller"), {}, this)
+            : util_1.load(path_1.resolve(setting_1.default.root_prod, "src/controller"), {}, this);
         this.app.use(this.$router.routes());
     }
     async listen(port, callback) {
