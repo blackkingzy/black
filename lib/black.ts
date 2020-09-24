@@ -62,14 +62,14 @@ export default class Black {
         //装载model到ctx
         isDev()
             ? this.app.use(
-                loadModel(resolve(Setting.root, "src/model"), {}, this)
+                loadModel(resolve(setting.root, "src/model"), {}, this)
             )
             : this.app.use(
-                loadModel(resolve(Setting.root_prod, "src/model"), {}, this)
+                loadModel(resolve(setting.root_prod, "src/model"), {}, this)
             );
 
         //加载全局的工厂函数（加工this）
-        if (this.option && this.option.factory.length) {
+        if (this.option && this.option.factory && this.option.factory.length) {
             this.option.factory.forEach((func) => {
                 func(this);
             });
@@ -82,7 +82,7 @@ export default class Black {
         });
 
         // //加载全局自定义中间件
-        if (this.option && this.option.mids.length) {
+        if (this.option && this.option.mids && this.option.mids.length) {
             this.option.mids.forEach((mid) => {
                 this.app.use(mid);
             });
@@ -90,8 +90,8 @@ export default class Black {
 
         //加载路由和controller
         isDev()
-            ? load(resolve(Setting.root, "src/controller"), {}, this)
-            : load(resolve(Setting.root_prod, "src/controller"), {}, this);
+            ? load(resolve(setting.root, "src/controller"), {}, this)
+            : load(resolve(setting.root_prod, "src/controller"), {}, this);
 
         this.app.use(this.$router.routes());
     }

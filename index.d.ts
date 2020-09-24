@@ -17,7 +17,7 @@ declare class Black {
     public $connection: Connection;
     [key: string]: any;
 
-    constructor(option?: any);
+    constructor(option?: Option);
 
     start(): void;
 
@@ -36,13 +36,14 @@ interface TConfig {
     whiteList?: string[];
 }
 
-declare class Setting {
-    public static root?: string;
-    public token: boolean;
-    public database: boolean;
-    public httplog: boolean;
-    public tconfig: TConfig;
-    public dconfig: DBConfig;
+interface Setting {
+    token: boolean;
+    database: boolean;
+    httplog: boolean;
+    root?: string;
+    root_prod?: string;
+    tconfig?: TConfig;
+    dconfig?: DBConfig;
 }
 
 declare function userTokenVerify(ctx: Koa.Context, next: Koa.Next): void;
@@ -63,7 +64,7 @@ type Decoration = (
 
 type globalMiddleware = (ctx: Koa.Context, next: Koa.Next) => void;
 
-type factoryFunction = (app?: Black) => void;
+type factoryFunction = (instance: Black) => void;
 
 interface Option {
     mids?: Array<globalMiddleware>;
@@ -112,5 +113,5 @@ export {
     success,
     isDev,
     //实例
-    logger
+    logger,
 };
