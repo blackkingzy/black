@@ -29,15 +29,15 @@ export interface IRouteOptions {
     middlewares?: Koa.Middleware[];
 }
 
-interface DBConfig {
+export interface DBConfig {
     url: string;
     option?: ConnectionOptions;
     callback?: (error: any) => void;
 }
 
-interface TConfig {
+export interface TConfig {
     secret: Secret;
-    option: SignOptions;
+    option?: SignOptions;
     whiteList?: string[];
 }
 

@@ -9,7 +9,7 @@ export const success = (ctx: Koa.Context, res: any = null, msg = '请求成功')
     ctx.status = 200
 }
 
-export const isDev = () => {
+export const isDev = () => {    
     if (/ts-node/.test(process.argv[0])) return true;
     return false;
 };

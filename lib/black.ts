@@ -9,14 +9,14 @@ import { connect } from "./db";
 import { isDev } from "./helper";
 import { logger } from "./log";
 import { Connection } from "mongoose";
-import { Option, Model, Setting } from "./type";
+import { Option, Model } from "./type";
 
 export default class Black {
     public app: Koa;
     public $router: Router;
     public $model: Model = {};
     public $server: any = null;
-    public $connection: Connection;
+    public $connection: Connection | undefined;
     [key: string]: any;
 
     constructor(public option?: Option) {
@@ -62,10 +62,18 @@ export default class Black {
         //装载model到ctx
         isDev()
             ? this.app.use(
-                loadModel(resolve(setting.root, "src/model"), {}, this)
+                loadModel(
+                    resolve(setting.root as string, "src/model"),
+                    {},
+                    this
+                )
             )
             : this.app.use(
-                loadModel(resolve(setting.root_prod, "src/model"), {}, this)
+                loadModel(
+                    resolve(setting.root_prod as string, "src/model"),
+                    {},
+                    this
+                )
             );
 
         //加载全局的工厂函数（加工this）
@@ -90,8 +98,12 @@ export default class Black {
 
         //加载路由和controller
         isDev()
-            ? load(resolve(setting.root, "src/controller"), {}, this)
-            : load(resolve(setting.root_prod, "src/controller"), {}, this);
+            ? load(resolve(setting.root as string, "src/controller"), {}, this)
+            : load(
+                resolve(setting.root_prod as string, "src/controller"),
+                {},
+                this
+            );
 
         this.app.use(this.$router.routes());
     }

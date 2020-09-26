@@ -1,6 +1,6 @@
 import mongoose, { Connection } from "mongoose";
-import { Setting } from "./type";
-import Black from "./black"
+import { Setting, DBConfig } from "./type";
+import Black from "./black";
 
 export const connect = (setting: Setting, app?: Black): Promise<Connection> => {
     //数据库连接
@@ -8,7 +8,7 @@ export const connect = (setting: Setting, app?: Black): Promise<Connection> => {
         const db = mongoose.connection;
 
         db.once("connected", () => {
-            app ? app.$connection = db : ''
+            app ? (app.$connection = db) : "";
             resolve(db);
             console.log("数据库连接成功");
         });
@@ -17,8 +17,8 @@ export const connect = (setting: Setting, app?: Black): Promise<Connection> => {
             console.log("数据库连接失败");
         });
 
-        setting.dconfig.option
+        setting.dconfig && setting.dconfig.option
             ? mongoose.connect(setting.dconfig.url, setting.dconfig.option)
-            : mongoose.connect(setting.dconfig.url);
+            : mongoose.connect((<DBConfig>setting.dconfig).url);
     });
 };

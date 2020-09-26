@@ -16,24 +16,27 @@ const loadUserSetting = (root: string, filename: string) => {
     Object.assign(setting, userSetting);
 };
 
-const isHasdconfig = (isConnect: boolean) => {
-    if (isConnect) {
-        setting.dconfig
-            ? ""
-            : new Error(
-                "您开启了数据库连接，却没有配置dconfig，请在自定义的setting中配置"
-            );
+const isHasdconfig = (enableToken: boolean, enableDatabase: boolean) => {
+    if (enableToken && !setting.tconfig) {
+        throw new Error(
+            "您开启了token验证功能，却没有配置tconfig，请在自定义的setting中配置"
+        );
+    }
+    if (enableDatabase && !setting.dconfig) {
+        throw new Error(
+            "您开启了数据库连接，却没有配置dconfig，请在自定义的setting中配置"
+        );
     }
 };
 if (isDev()) {
-    if (fs.existsSync(path.join(setting.root, "setting.ts"))) {
-        loadUserSetting(setting.root, "setting.ts");
-        isHasdconfig(setting.database);
+    if (fs.existsSync(path.join(setting.root as string, "setting.ts"))) {
+        loadUserSetting(setting.root as string, "setting.ts");
+        isHasdconfig(setting.token, setting.database);
     }
 } else {
-    if (fs.existsSync(path.join(setting.root_prod, "setting.js"))) {
-        loadUserSetting(setting.root_prod, "setting.js");
-        isHasdconfig(setting.database);
+    if (fs.existsSync(path.join(setting.root_prod as string, "setting.js"))) {
+        loadUserSetting(setting.root_prod as string, "setting.js");
+        isHasdconfig(setting.token, setting.database);
     }
 }
 
