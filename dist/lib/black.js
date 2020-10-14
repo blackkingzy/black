@@ -13,6 +13,7 @@ const path_1 = require("path");
 const db_1 = require("./db");
 const helper_1 = require("./helper");
 const log_1 = require("./log");
+const error_1 = require("./error");
 class Black {
     constructor(option) {
         this.option = option;
@@ -24,34 +25,15 @@ class Black {
     async start() {
         if (setting_1.default.database)
             await db_1.connect(setting_1.default, this);
+        //打印控制台log
+        if (setting_1.default.httplog)
+            this.app.use(koa_logger_1.default());
         //全局错误处理
-        this.app.use(async (ctx, next) => {
-            try {
-                await next();
-            }
-            catch (err) {
-                log_1.logger.error(err.stack);
-                const status = err.status || 500;
-                //生产环境时 500错误的详细内容不返回给客户端，因为可能包含敏感信息
-                const error = status === 500 ? "Internal Server Error" : err.message;
-                //从error对象上读出各个属性，设置到响应中
-                ctx.body = {
-                    code: status,
-                    error: error,
-                };
-                if (status === 422) {
-                    ctx.body.detail = err.errors;
-                }
-                ctx.status = 200;
-            }
-        });
+        this.app.use(error_1.globalHandleError);
         //body解析
         this.app.use(koa_body_1.default({
             multipart: true,
         }));
-        //打印控制台log
-        if (setting_1.default.httplog)
-            this.app.use(koa_logger_1.default());
         //装载model到ctx
         helper_1.isDev()
             ? this.app.use(util_1.loadModel(path_1.resolve(setting_1.default.root, "src/model"), {}, this))

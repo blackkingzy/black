@@ -10,6 +10,7 @@ import { isDev } from "./helper";
 import { logger } from "./log";
 import { Connection } from "mongoose";
 import { Option, Model } from "./type";
+import { globalHandleError } from "./error";
 
 export default class Black {
     public app: Koa;
@@ -27,28 +28,11 @@ export default class Black {
     async start() {
         if (setting.database) await connect(setting, this);
 
-        //全局错误处理
-        this.app.use(async (ctx: Koa.Context, next: Koa.Next) => {
-            try {
-                await next();
-            } catch (err) {
-                logger.error(err.stack);
-                const status = err.status || 500;
-                //生产环境时 500错误的详细内容不返回给客户端，因为可能包含敏感信息
-                const error =
-                    status === 500 ? "Internal Server Error" : err.message;
+        //打印控制台log
+        if (setting.httplog) this.app.use(koalogger());
 
-                //从error对象上读出各个属性，设置到响应中
-                ctx.body = {
-                    code: status, //服务器自身的处理逻辑错误（包含框架错误500及自定义业务逻辑错误533开始）客户端请求参数导致的错误（4xx开始），设置不同的状态码
-                    error: error,
-                };
-                if (status === 422) {
-                    ctx.body.detail = err.errors;
-                }
-                ctx.status = 200;
-            }
-        });
+        //全局错误处理
+        this.app.use(globalHandleError);
 
         //body解析
         this.app.use(
@@ -56,8 +40,6 @@ export default class Black {
                 multipart: true,
             })
         );
-        //打印控制台log
-        if (setting.httplog) this.app.use(koalogger());
 
         //装载model到ctx
         isDev()
