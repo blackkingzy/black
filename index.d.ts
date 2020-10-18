@@ -4,7 +4,8 @@ import { Secret, SignOptions } from "jsonwebtoken";
 import { ConnectionOptions } from "mongoose";
 import { Logger } from "winston";
 import { Connection } from "mongoose";
-
+//以下包引入是为了让vscode找到其的声明文件
+import koabody from "koa-body"
 interface Model {
     [model: string]: any;
 }

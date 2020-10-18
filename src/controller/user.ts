@@ -1,7 +1,7 @@
 import koa from "koa";
 import { get, post } from "../../lib/request";
 import { body } from "../../lib/validator";
-import { logger } from "../../lib/log"
+import { logger } from "../../lib/log";
 
 class User {
     /**
@@ -19,6 +19,7 @@ class User {
         age: { type: "number", required: true },
     })
     async login(ctx: koa.Context) {
+        ctx.request.body
         const blogs = ctx.model.blogs;
         const result = await blogs.create({ title: "zhangyue" });
         console.log(result);
@@ -28,20 +29,20 @@ class User {
      * @model test
      * @param ctx
      */
-    @get("/")
+    @get("/", { tokenVerify: false })
     async test(ctx: koa.Context) {
-        console.log('test');
+        console.log("test");
         logger.log({
-            level: 'error',
-            message: 'Hello distributed log files!'
+            level: "error",
+            message: "Hello distributed log files!",
         });
         logger.log({
-            level: 'warn',
-            message: 'Hello distributed log files!'
+            level: "warn",
+            message: "Hello distributed log files!",
         });
         logger.log({
-            level: 'info',
-            message: 'Hello distributed log files!'
+            level: "info",
+            message: "Hello distributed log files!",
         });
         ctx.body = "欢迎来到TS的世界";
     }
