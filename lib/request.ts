@@ -24,4 +24,4 @@ const method = (httpMethod: HTTPMethod) => (
 export const get = method("get");
 export const post = method("post");
 export const put = method("put");
-export const del = method("del");
+export const del = method("delete");

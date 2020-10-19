@@ -6,6 +6,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.generate = exports.userTokenVerify = void 0;
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const setting_1 = __importDefault(require("./setting"));
+const error_1 = require("./error");
 exports.userTokenVerify = async (ctx, next) => {
     const userToken = ctx.headers.authorization;
     try {
@@ -14,7 +15,8 @@ exports.userTokenVerify = async (ctx, next) => {
         await next();
     }
     catch (error) {
-        console.log(error);
+        //423是token验证失败专用code
+        throw new error_1.blackError(423, error);
     }
 };
 exports.generate = (Info) => {

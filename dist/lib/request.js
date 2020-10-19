@@ -24,4 +24,4 @@ const method = (httpMethod) => (path, options = { tokenVerify: true }) => {
 exports.get = method("get");
 exports.post = method("post");
 exports.put = method("put");
-exports.del = method("del");
+exports.del = method("delete");

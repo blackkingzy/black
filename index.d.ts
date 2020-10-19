@@ -6,6 +6,8 @@ import { Logger } from "winston";
 import { Connection } from "mongoose";
 //以下包引入是为了让vscode找到其的声明文件
 import koabody from "koa-body"
+
+
 interface Model {
     [model: string]: any;
 }
@@ -94,11 +96,20 @@ declare function isDev(): boolean;
 
 declare const logger: Logger;
 
+
+declare class blackError extends Error {
+    public status: number
+    public stack: string | undefined
+    [key: string]: any
+    constructor(code: number, e: Error)
+}
+
+//注意：index.d.ts是为了声明,index.ts是为了实际的使用,尽量保持一致性
 export {
     //接口
     Black,
     Setting,
-    Option,
+    blackError,
     //功能函数
     userTokenVerify,
     generate,

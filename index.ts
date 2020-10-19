@@ -12,11 +12,14 @@ import { utcToLocalString } from "./lib/date";
 import { success, isDev } from "./lib/helper";
 import { Setting } from "./lib/type";
 import { logger } from "./lib/log";
+//注意,导出类时要导出具体的类,不能导出类的声明
+import { blackError } from "./lib/error";
 
 export {
     //接口
     Black,
     Setting,
+    blackError,
     //功能函数
     userTokenVerify,
     generate,

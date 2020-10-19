@@ -1,9 +1,10 @@
 import Koa from "koa";
 import { Secret, SignOptions } from "jsonwebtoken";
 import { ConnectionOptions } from "mongoose";
-import path from "path";
 import Black from "./black";
 
+//专门写type.ts是为了声明与实现分离,以后这个框架变大,可以分离多个文件夹,每个模块有自己的声明文件
+//有的类在这里重新声明,是将来要确定类型时从这里拿,不要直接从具体的模块中拿
 export interface Model {
     [model: string]: any;
 }
@@ -21,7 +22,7 @@ export interface dataMap {
     [index: string]: number;
 }
 
-export type HTTPMethod = "get" | "put" | "del" | "post" | "patch";
+export type HTTPMethod = "get" | "put" | "delete" | "post" | "patch";
 
 export interface IRouteOptions {
     tokenVerify: boolean;
@@ -54,3 +55,11 @@ export interface Setting {
 export interface ILoadOptions {
     extname?: string;
 }
+
+export declare class blackError extends Error {
+    public status: number
+    public stack: string | undefined
+    [key: string]: any
+    constructor(code: number, e: Error)
+}
+

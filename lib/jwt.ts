@@ -2,6 +2,7 @@ import Koa from "koa";
 import jwt from "jsonwebtoken";
 import setting from "./setting";
 import { TConfig } from "./type";
+import { blackError } from "./error";
 
 export const userTokenVerify = async (ctx: Koa.Context, next: Koa.Next) => {
     const userToken = ctx.headers.authorization;
@@ -13,7 +14,8 @@ export const userTokenVerify = async (ctx: Koa.Context, next: Koa.Next) => {
         ctx.data = decoded;
         await next();
     } catch (error) {
-        console.log(error);
+        //423是token验证失败专用code
+        throw new blackError(423, error);
     }
 };
 
