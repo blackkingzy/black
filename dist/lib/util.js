@@ -13,9 +13,9 @@ const load = (folder, options = {}, app) => {
     exports.router = router = app.$router;
     const extname = options.extname || ".{js,ts}";
     //sync返回读取的所有文件的路径数组
-    glob_1.default.sync(path_1.join(folder, `./**/*controller${extname}`))
+    glob_1.default.sync(path_1.join(folder, `./**/*${extname}`))
         .filter((v) => v.indexOf(".spec") === -1) // 排除测试代码
-        .filter((v) => /controller.ts/i.test(v))
+        .filter((v) => /controller/i.test(v))
         .forEach((item) => require(item));
 };
 exports.load = load;
