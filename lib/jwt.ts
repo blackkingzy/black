@@ -29,3 +29,7 @@ export const generate = (Info: any) => {
         : jwt.sign(Info, (setting.tconfig as TConfig).secret);
     return token;
 };
+
+export const tokenVerify = (token: string) => {
+    return jwt.verify(token, (setting.tconfig as TConfig).secret);
+};

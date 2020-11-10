@@ -2,7 +2,7 @@ import Koa from "koa";
 
 export const success = (ctx: Koa.Context, res: any = null, msg = '请求成功') => {
     ctx.body = {
-        code: 0,
+        code: 200,
         data: res,
         msg
     }

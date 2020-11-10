@@ -1,12 +1,7 @@
 import Black from "./lib/black";
-import { generate } from "./lib/jwt";
-import { userTokenVerify } from "./lib/jwt";
-import { get } from "./lib/request";
-import { post } from "./lib/request";
-import { put } from "./lib/request";
-import { del } from "./lib/request";
-import { query } from "./lib/validator";
-import { body } from "./lib/validator";
+import { generate, tokenVerify } from "./lib/jwt";
+import { get, post, put, del } from "./lib/request";
+import { query, body } from "./lib/validator";
 import { imageUpload } from "./lib/upload";
 import { utcToLocalString } from "./lib/date";
 import { success, isDev } from "./lib/helper";
@@ -21,7 +16,7 @@ export {
     Setting,
     blackError,
     //功能函数
-    userTokenVerify,
+    tokenVerify,
     generate,
     get,
     post,

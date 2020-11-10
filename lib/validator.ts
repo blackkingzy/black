@@ -16,7 +16,7 @@ const validateRule = (paramPart: string) => (rule: any) => {
                     const bk_error = new blackError(422, error);
                     bk_error.error = error.errors;
                     bk_error.fields = error.fields;
-                    throw bk_error;
+                    return Promise.reject(bk_error)
                 });
             await oldMethod.apply(null, [ctx, next]);
         };
