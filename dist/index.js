@@ -26,6 +26,6 @@ Object.defineProperty(exports, "success", { enumerable: true, get: function () {
 Object.defineProperty(exports, "isDev", { enumerable: true, get: function () { return helper_1.isDev; } });
 const log_1 = require("./lib/log");
 Object.defineProperty(exports, "logger", { enumerable: true, get: function () { return log_1.logger; } });
-//注意,导出类时要导出具体的类,不能导出类的声明
+//注意,导出类时要导出具体的类,不能导出类的声明,即不能带有declare关键字
 const error_1 = require("./lib/error");
 Object.defineProperty(exports, "blackError", { enumerable: true, get: function () { return error_1.blackError; } });

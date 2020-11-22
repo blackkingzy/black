@@ -18,11 +18,13 @@ export default class Black {
     public $model: Model = {};
     public $server: any = null;
     public $connection: Connection | undefined;
+    public static instance: Black;
     [key: string]: any;
 
     constructor(public option?: Option) {
         this.app = new Koa();
         this.$router = new Router();
+        Black.instance = this;
     }
 
     async start() {
@@ -102,5 +104,12 @@ export default class Black {
         } catch (error) {
             logger.error(error.stack);
         }
+    }
+    
+    /**
+     * 获取black实例
+     */
+    static getInstance() {
+        return Black.instance;
     }
 }

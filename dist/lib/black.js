@@ -21,6 +21,7 @@ class Black {
         this.$server = null;
         this.app = new koa_1.default();
         this.$router = new koa_router_1.default();
+        Black.instance = this;
     }
     async start() {
         if (setting_1.default.database)
@@ -74,6 +75,12 @@ class Black {
         catch (error) {
             log_1.logger.error(error.stack);
         }
+    }
+    /**
+     * 获取black实例
+     */
+    static getInstance() {
+        return Black.instance;
     }
 }
 exports.default = Black;

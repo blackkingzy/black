@@ -24,6 +24,8 @@ declare class Black {
     start(): void;
 
     listen(port?: number, callback?: () => void);
+
+    static getInstance(): Black;
 }
 
 interface DBConfig {

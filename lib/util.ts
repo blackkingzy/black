@@ -4,11 +4,8 @@ import Black from "./black";
 import { join } from "path";
 import { ILoadOptions } from "./type";
 
-//定义router变量指向app.$router
-let router: any = null;
 
 const load = (folder: string, options: ILoadOptions = {}, app: Black) => {
-    router = app.$router;
     const extname = options.extname || ".{js,ts}";
     //sync返回读取的所有文件的路径数组
     glob.sync(join(folder, `./**/*${extname}`))
@@ -33,4 +30,4 @@ const loadModel = (folder: string, options: ILoadOptions, app: Black) => {
     };
 };
 
-export { load, loadModel, router };
+export { load, loadModel};

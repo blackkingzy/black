@@ -5,7 +5,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.del = exports.put = exports.post = exports.get = void 0;
 const setting_1 = __importDefault(require("./setting"));
-const util_1 = require("./util");
+const black_1 = __importDefault(require("./black"));
 const jwt_1 = require("./jwt");
 const method = (httpMethod) => (path, options = { tokenVerify: true }) => {
     return (target, key, descriptor) => {
@@ -18,7 +18,8 @@ const method = (httpMethod) => (path, options = { tokenVerify: true }) => {
         //接口前缀
         mids.push(target[key]);
         const url = options.prefix ? options.prefix + path : path;
-        util_1.router[httpMethod](url, ...mids);
+        const { $router: router } = black_1.default.getInstance();
+        router[httpMethod](url, ...mids);
     };
 };
 exports.get = method("get");

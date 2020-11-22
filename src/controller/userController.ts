@@ -20,7 +20,7 @@ class User {
     })
     async login(ctx: koa.Context) {
         ctx.request.body
-        const blogs = ctx.model.blogs;
+        const blogs = ctx.model.Blog;
         const result = await blogs.create({ title: "zhangyue" });
         console.log(result);
         ctx.body = "欢迎来到TS的世界";

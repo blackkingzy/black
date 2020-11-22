@@ -1,7 +1,7 @@
 import setting from "./setting";
-import { router } from "./util";
+import Black from "./black";
 import { userTokenVerify } from "./jwt";
-import { HTTPMethod,IRouteOptions} from "./type";
+import { HTTPMethod, IRouteOptions } from "./type";
 
 const method = (httpMethod: HTTPMethod) => (
     path: string,
@@ -17,6 +17,7 @@ const method = (httpMethod: HTTPMethod) => (
         //接口前缀
         mids.push(target[key]);
         const url = options.prefix ? options.prefix + path : path;
+        const { $router: router } = Black.getInstance();
         router[httpMethod](url, ...mids);
     };
 };

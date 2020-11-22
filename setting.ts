@@ -1,7 +1,7 @@
 import { Setting } from "./lib/type";
 
 const setting: Setting = {
-    token: true,
+    token: false,
     database: true,
     httplog: true,
     tconfig: {
