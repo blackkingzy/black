@@ -55,7 +55,7 @@ declare function tokenVerify(token: string): any;
 declare function generate(Info: any): void;
 
 interface IRouteOptions {
-    tokenVerify: boolean;
+    tokenVerify?: boolean;
     prefix?: string;
     middlewares?: Koa.Middleware[];
 }

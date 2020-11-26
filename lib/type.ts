@@ -25,7 +25,7 @@ export interface dataMap {
 export type HTTPMethod = "get" | "put" | "delete" | "post" | "patch";
 
 export interface IRouteOptions {
-    tokenVerify: boolean;
+    tokenVerify?: boolean;
     prefix?: string;
     middlewares?: Koa.Middleware[];
 }

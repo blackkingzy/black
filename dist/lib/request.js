@@ -7,17 +7,18 @@ exports.del = exports.put = exports.post = exports.get = void 0;
 const setting_1 = __importDefault(require("./setting"));
 const black_1 = __importDefault(require("./black"));
 const jwt_1 = require("./jwt");
-const method = (httpMethod) => (path, options = { tokenVerify: true }) => {
+const method = (httpMethod) => (path, options) => {
     return (target, key, descriptor) => {
+        const mergeOptions = Object.assign({ tokenVerify: true }, options);
         //注意中间件的执行顺序
         const mids = [];
         //token验证
-        setting_1.default.token && options.tokenVerify ? mids.push(jwt_1.userTokenVerify) : "";
+        setting_1.default.token && mergeOptions.tokenVerify ? mids.push(jwt_1.userTokenVerify) : "";
         //接口单独中间件
-        options.middlewares ? mids.push(...options.middlewares) : "";
+        mergeOptions.middlewares ? mids.push(...mergeOptions.middlewares) : "";
         //接口前缀
         mids.push(target[key]);
-        const url = options.prefix ? options.prefix + path : path;
+        const url = mergeOptions.prefix ? mergeOptions.prefix + path : path;
         const { $router: router } = black_1.default.getInstance();
         router[httpMethod](url, ...mids);
     };
