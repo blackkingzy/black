@@ -9,7 +9,7 @@ exports.globalHandleError = async (ctx, next) => {
     }
     catch (err) {
         log_1.logger.error(err.stack);
-        err.errors ? log_1.logger.error(JSON.stringify(err.errors)) : '';
+        err.errors ? log_1.logger.error(JSON.stringify(err.errors)) : "";
         const status = err.status || 500;
         //生产环境时 500错误的详细内容不返回给客户端，因为可能包含敏感信息
         const error_msg = status === 500 ? "Internal Server Error" : err.message;
@@ -20,7 +20,9 @@ exports.globalHandleError = async (ctx, next) => {
         };
         //当状态码为自定义的422时，就将具体的错误信息发到前台
         if (status === 422) {
-            ctx.body.detail = err.errors;
+            ctx.body = Object.assign(ctx.body, {
+                detail: err.errors,
+            });
         }
         ctx.status = 200;
     }

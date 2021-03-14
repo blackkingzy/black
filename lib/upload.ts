@@ -13,7 +13,7 @@ export const imageUpload = (filePath: string, targetPath: string) => {
 
         upStream.on('finish', function () {
             console.log('文件上传完毕');
-            resolve()
+            resolve(true)
         });
         reader.pipe(upStream);
     })

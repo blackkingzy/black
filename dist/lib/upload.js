@@ -16,7 +16,7 @@ exports.imageUpload = (filePath, targetPath) => {
         });
         upStream.on('finish', function () {
             console.log('文件上传完毕');
-            resolve();
+            resolve(true);
         });
         reader.pipe(upStream);
     });

@@ -5,7 +5,7 @@ import { TConfig } from "./type";
 import { blackError } from "./error";
 
 export const userTokenVerify = async (ctx: Koa.Context, next: Koa.Next) => {
-    const userToken = ctx.headers.authorization;
+    const userToken = ctx.headers.authorization as string;
     try {
         const decoded = jwt.verify(
             userToken,
